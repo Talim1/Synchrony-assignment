@@ -1,9 +1,7 @@
 package com.example.demo.entity;
 
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "APP_USER")
@@ -11,12 +9,23 @@ public class User {
 
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(unique=true)
     private String username;
+
+    @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false)
     private String fullName;
+
     private String country;
+
     private int age;
+
+    @Column(nullable = false)
     private String email;
 
     private boolean isAuthenticated;
