@@ -28,10 +28,10 @@ public class User {
     @Column(nullable = false)
     private String email;
 
-    private boolean isAuthenticated;
+    private boolean authenticated;
 
     public boolean isAuthenticated() {
-        return isAuthenticated;
+        return authenticated;
     }
 
     public Long getId() {
@@ -43,7 +43,7 @@ public class User {
     }
 
     public void setAuthenticated(boolean authenticated) {
-        isAuthenticated = authenticated;
+        this.authenticated = authenticated;
     }
 
     public String getUsername() {

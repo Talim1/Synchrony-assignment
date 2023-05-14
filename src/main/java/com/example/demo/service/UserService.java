@@ -2,7 +2,11 @@ package com.example.demo.service;
 
 import com.example.demo.model.User;
 
+import java.util.Optional;
+
 public interface UserService {
 
-    User registerUser(com.example.demo.model.User user) throws Exception;
+    Optional<User> registerUser(com.example.demo.model.User user) throws Exception;
+
+    boolean authenticateUser(String userName, String password) throws Exception;
 }

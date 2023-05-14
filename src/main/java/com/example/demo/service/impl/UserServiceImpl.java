@@ -1,5 +1,6 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.exception.UserNotFoundException;
 import com.example.demo.mapper.UserMapper;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
@@ -10,6 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -22,7 +26,7 @@ public class UserServiceImpl implements UserService {
     private Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Override
-    public User registerUser(User user) throws Exception {
+    public Optional<User> registerUser(User user) throws Exception {
 
         com.example.demo.entity.User userEntity = userMapper.mapToUserEntity(user);
         com.example.demo.entity.User dbUser = userRepository.save(userEntity);
@@ -32,6 +36,18 @@ public class UserServiceImpl implements UserService {
         }
         User userModel = userMapper.mapToUserModel(dbUser);
         logger.info("User {} registered successfully.", dbUser.getUsername());
-        return userModel;
+        return Optional.of(userModel);
+    }
+
+    @Override
+    @Transactional
+    public boolean authenticateUser(String userName, String password) throws Exception {
+
+        Optional<com.example.demo.entity.User> dbUser = userRepository.findUserByUserNameAndPassword(userName, password);
+        if(!dbUser.isPresent()) {
+            throw new UserNotFoundException();
+        }
+        return userRepository.authenticateUser(userName) == 1;
+
     }
 }

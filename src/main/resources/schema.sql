@@ -6,5 +6,6 @@ CREATE TABLE APP_USER (
   fullName VARCHAR(250) NOT NULL,
   country VARCHAR(250) NOT NULL,
   age int NOT NULL,
-  email VARCHAR(250) DEFAULT NULL
+  email VARCHAR(250) DEFAULT NULL,
+  isAuthenticated BOOLEAN
 );

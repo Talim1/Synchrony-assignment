@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.exception.UserNotFoundException;
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
 import org.slf4j.Logger;
@@ -48,7 +49,18 @@ public class UserController {
         if(null == user.getPassword()) {
             return new ResponseEntity<>("Password is missing", HttpStatus.BAD_REQUEST);
         }
+        try {
+            boolean status = userService.authenticateUser(user.getUsername(), user.getPassword());
+            if(status) {
+                return new ResponseEntity<>("User authenticated successfully", HttpStatus.OK);
+            } else {
+                return new ResponseEntity("Failed to authenticate User", HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        } catch (UserNotFoundException userNotFoundException) {
+            return new ResponseEntity(userNotFoundException.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
 
-        return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
     }
 }
