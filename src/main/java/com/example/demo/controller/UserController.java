@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,10 +44,10 @@ public class UserController {
     public ResponseEntity<?> login(@RequestBody User user){
 
         logger.info("User authentication started {}", user.getUsername());
-        if(null == user.getUsername()) {
+        if(StringUtils.isEmpty(user.getUsername())) {
             return new ResponseEntity<>("Username is missing", HttpStatus.BAD_REQUEST);
         }
-        if(null == user.getPassword()) {
+        if(StringUtils.isEmpty(user.getPassword())) {
             return new ResponseEntity<>("Password is missing", HttpStatus.BAD_REQUEST);
         }
         try {

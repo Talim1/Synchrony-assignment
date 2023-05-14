@@ -2,10 +2,12 @@ package com.example.demo.entity;
 
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "APP_USER")
-public class User {
+public class User implements Serializable {
 
 
     @Id
@@ -21,17 +23,31 @@ public class User {
     @Column(nullable = false)
     private String fullName;
 
+    @Column
     private String country;
 
+    @Column
     private int age;
 
     @Column(nullable = false)
     private String email;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "username", referencedColumnName = "username")
+    private List<ImageMetadata> imageMetadata;
+
     private boolean authenticated;
 
     public boolean isAuthenticated() {
         return authenticated;
+    }
+
+    public List<ImageMetadata> getImageMetadata() {
+        return imageMetadata;
+    }
+
+    public void setImageMetadata(List<ImageMetadata> imageMetadata) {
+        this.imageMetadata = imageMetadata;
     }
 
     public Long getId() {

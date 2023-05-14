@@ -20,4 +20,7 @@ public interface UserRepository  extends JpaRepository<User, Long> {
     @Modifying
     @Query("update User u set u.authenticated = true where u.username = :username")
     int authenticateUser(@Param("username") String userName);
+
+    @Query("SELECT u FROM User u WHERE u.username = :username")
+    Optional<User> findUserByUserName(@Param("username") String userName);
 }
