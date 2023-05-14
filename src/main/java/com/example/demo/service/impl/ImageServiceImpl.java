@@ -2,7 +2,9 @@ package com.example.demo.service.impl;
 
 import com.example.demo.entity.ImageMetadata;
 import com.example.demo.entity.User;
+import com.example.demo.exception.FileNotFoundException;
 import com.example.demo.model.FileMetadata;
+import com.example.demo.repository.ImageMetadataRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.MediaService;
 import org.apache.commons.io.FileUtils;
@@ -34,11 +36,14 @@ public class ImageServiceImpl implements MediaService {
     @Value("${imgur.clientId}")
     private String clientId;
 
-    @Value("${imgur.imageUploadUrl}")
-    private String uploadUrl;
+    @Value("${imgur.imgurBaseUrl}")
+    private String imgurBaseUrl;
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ImageMetadataRepository imageMetadataRepository;
 
     private RestTemplate restTemplate = new RestTemplate();
 
@@ -47,7 +52,7 @@ public class ImageServiceImpl implements MediaService {
     @Override
     public FileMetadata uploadFile(File file, String userName) {
 
-        logger.info("******************* " + uploadUrl);
+        logger.info("******************* " + imgurBaseUrl);
         logger.info("******************* " + clientId);
 
         HttpHeaders headers = new HttpHeaders();
@@ -57,7 +62,7 @@ public class ImageServiceImpl implements MediaService {
         parts.add("image", new FileSystemResource(file));
 
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(parts, headers);
-        ResponseEntity<FileMetadata> response = restTemplate.exchange(uploadUrl,
+        ResponseEntity<FileMetadata> response = restTemplate.exchange(imgurBaseUrl,
                 HttpMethod.POST, requestEntity, FileMetadata.class);
 
         saveImageMetadataInUserProfile(response.getBody(), userName);
@@ -78,6 +83,32 @@ public class ImageServiceImpl implements MediaService {
         logger.info(response.getBody().toString());
 
         return response.getBody();
+    }
+
+    @Override
+    public void deleteFile(String fileOwner, String fileId) throws FileNotFoundException {
+        Optional<ImageMetadata> imageMetadata = imageMetadataRepository.findUserByUserNameAndFileId(fileOwner, fileId);
+
+        logger.info("******************* " + imgurBaseUrl);
+        logger.info("******************* " + clientId);
+
+        if(imageMetadata.isEmpty()) {
+            throw new FileNotFoundException("File not found");
+        }
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Client-ID " + clientId);
+        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(headers);
+        ResponseEntity<FileMetadata> response = restTemplate.exchange(imgurBaseUrl+"/"+imageMetadata.get().getDeleteHash(),
+                HttpMethod.DELETE, requestEntity, FileMetadata.class);
+
+        logger.info("**********" + response.getBody().toString());
+        if(response.getBody().isSuccess()) {
+
+                imageMetadataRepository.delete(imageMetadata.get());
+
+
+        }
+
     }
 
     private void saveImageMetadataInUserProfile(FileMetadata fileMetadata, String userName) {
