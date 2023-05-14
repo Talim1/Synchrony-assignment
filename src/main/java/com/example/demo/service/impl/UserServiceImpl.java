@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService {
 
         Optional<com.example.demo.entity.User> dbUser = userRepository.findUserByUserNameAndPassword(userName, password);
         if(!dbUser.isPresent()) {
-            throw new UserNotFoundException();
+            throw new UserNotFoundException("User is not registered");
         }
         return userRepository.authenticateUser(userName) == 1;
 

@@ -60,17 +60,19 @@ public class ImageServiceImpl implements MediaService {
         ResponseEntity<FileMetadata> response = restTemplate.exchange(uploadUrl,
                 HttpMethod.POST, requestEntity, FileMetadata.class);
 
-        CompletableFuture<Void> deleteTempFile = CompletableFuture.runAsync(() -> {
+        saveImageMetadataInUserProfile(response.getBody(), userName);
+        CompletableFuture.runAsync(() -> {
             try {
                 FileUtils.forceDelete(file);
+                //saveImageMetadataInUserProfile(response.getBody(), userName);
             } catch (IOException e) {
                 logger.error("Failed to delete the temp file.");
             }
         });
 
-        CompletableFuture<Void> addMetadataInDB = CompletableFuture.runAsync(() -> {
-            saveImageMetadataInUserProfile(response.getBody(), userName);
-        });
+//        CompletableFuture.runAsync(() -> {
+//            saveImageMetadataInUserProfile(response.getBody(), userName);
+//        });
 
 
         logger.info(response.getBody().toString());
