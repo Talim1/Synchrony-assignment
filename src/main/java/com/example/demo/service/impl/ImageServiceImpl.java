@@ -7,6 +7,7 @@ import com.example.demo.model.FileMetadata;
 import com.example.demo.repository.ImageMetadataRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.MediaService;
+import com.example.demo.util.DemoUtil;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -109,6 +110,18 @@ public class ImageServiceImpl implements MediaService {
 
         }
 
+    }
+
+    @Override
+    public String viewFile(String fileOwner, String fileId) throws FileNotFoundException {
+
+        Optional<ImageMetadata> imageMetadata = imageMetadataRepository.findUserByUserNameAndFileId(fileOwner, fileId);
+        if(imageMetadata.isPresent()) {
+            String url = imageMetadata.get().getPreviewLink();
+            DemoUtil.viewInBrowser(url);
+            return url;
+        }
+        throw new FileNotFoundException("File not found with given details.");
     }
 
     private void saveImageMetadataInUserProfile(FileMetadata fileMetadata, String userName) {

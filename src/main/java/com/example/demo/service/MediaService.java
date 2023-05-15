@@ -10,4 +10,5 @@ public interface MediaService {
 
     FileMetadata uploadFile(File file, String userName);
     void deleteFile(String fileOwner, String fileId) throws FileNotFoundException;
+    String viewFile(String fileOwner, String fileId) throws FileNotFoundException;
 }

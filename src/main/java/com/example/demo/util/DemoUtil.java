@@ -5,15 +5,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URI;
+
 import org.apache.commons.io.FileUtils;
 
-public class FileConverter {
+public class DemoUtil {
 
-    private static Logger logger = LoggerFactory.getLogger(FileConverter.class);
+    private static Logger logger = LoggerFactory.getLogger(DemoUtil.class);
 
 
 //    public static File convertToFile(MultipartFile multipartFile) {
@@ -51,5 +54,19 @@ public class FileConverter {
             logger.info(e.getMessage(), e);
         }
         return null;
+    }
+
+    public static void viewInBrowser(String url) {
+
+        System.setProperty("java.awt.headless", "false");
+        Desktop desktop = Desktop.getDesktop();
+
+        try{
+
+            desktop.browse(new URI("https://www.google.com/"));
+
+        }catch(Exception e){
+            logger.error(e.getMessage(), e);
+        }
     }
 }
