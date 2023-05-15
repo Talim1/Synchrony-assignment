@@ -34,10 +34,10 @@ import org.springframework.util.LinkedMultiValueMap;
 @Service
 public class ImageServiceImpl implements MediaService {
 
-    @Value("${imgur.clientId}")
+    @Value("${imgur.clientId:abc123}")
     private String clientId;
 
-    @Value("${imgur.imgurBaseUrl}")
+    @Value("${imgur.imgurBaseUrl:https://api.imgur.com/3/image}")
     private String imgurBaseUrl;
 
     @Autowired
@@ -46,7 +46,8 @@ public class ImageServiceImpl implements MediaService {
     @Autowired
     private ImageMetadataRepository imageMetadataRepository;
 
-    private RestTemplate restTemplate = new RestTemplate();
+    @Autowired
+    private RestTemplate restTemplate; // = new RestTemplate();
 
     private Logger logger = LoggerFactory.getLogger(ImageServiceImpl.class);
 
