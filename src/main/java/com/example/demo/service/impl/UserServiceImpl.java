@@ -1,7 +1,9 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.exception.UserNotFoundException;
+import com.example.demo.mapper.ImageDataMapper;
 import com.example.demo.mapper.UserMapper;
+import com.example.demo.model.Data;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
@@ -12,7 +14,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,7 +26,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
-    private UserMapper userMapper = Mappers.getMapper(UserMapper.class);;
+    private UserMapper userMapper = Mappers.getMapper(UserMapper.class);
+
+    private ImageDataMapper imageDataMapper = Mappers.getMapper(ImageDataMapper.class);
 
     private Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
@@ -59,7 +66,16 @@ public class UserServiceImpl implements UserService {
         if(dbUser.isEmpty()) {
             throw new UserNotFoundException("User is not registered");
         }
+
         User userModel = userMapper.mapToUserModel(dbUser.get());
+        if(!CollectionUtils.isEmpty(dbUser.get().getImageMetadata())) {
+            List<Data> data = new ArrayList<>();
+            dbUser.get().getImageMetadata().forEach(im -> {
+                data.add(imageDataMapper.toImageData(im));
+            });
+            userModel.setImageData(data);
+        }
+
 
         return Optional.of(userModel);
     }
