@@ -3,6 +3,7 @@ package com.example.demo.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -44,6 +45,13 @@ public class User implements Serializable {
 
     public List<ImageMetadata> getImageMetadata() {
         return imageMetadata;
+    }
+
+    public boolean addImageMetadata(ImageMetadata im) {
+        if(this.imageMetadata == null) {
+            this.imageMetadata = new ArrayList<>();
+        }
+        return imageMetadata.add(im);
     }
 
     public void setImageMetadata(List<ImageMetadata> imageMetadata) {

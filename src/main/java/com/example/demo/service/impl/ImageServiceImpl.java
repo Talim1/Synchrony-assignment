@@ -34,10 +34,10 @@ import org.springframework.util.LinkedMultiValueMap;
 @Service
 public class ImageServiceImpl implements MediaService {
 
-    @Value("${imgur.clientId:abc123}")
+    @Value("${imgur.clientId}")
     private String clientId;
 
-    @Value("${imgur.imgurBaseUrl:https://api.imgur.com/3/image}")
+    @Value("${imgur.imgurBaseUrl}")
     private String imgurBaseUrl;
 
     @Autowired
@@ -135,10 +135,10 @@ public class ImageServiceImpl implements MediaService {
         im.setFileType(fileMetadata.getData().getType());
         im.setUsername(userName);
 
-        user.get().getImageMetadata().add(im);
+        user.get().addImageMetadata(im);
 
 
-        User savedUser = userRepository.save(user.get());
+        userRepository.save(user.get());
 
     }
 }
