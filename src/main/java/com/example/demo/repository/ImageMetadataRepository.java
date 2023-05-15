@@ -13,8 +13,7 @@ import java.util.Optional;
 
 public interface ImageMetadataRepository extends JpaRepository<ImageMetadata, Long> {
 
-    @Modifying
-    @Query("delete from ImageMetadata im WHERE im.username = :username and im.fileId = :fileId")
+    @Query("SELECT im FROM ImageMetadata im WHERE im.username = :username and im.fileId = :fileId")
     Optional<ImageMetadata> findUserByUserNameAndFileId(@Param("username") String userName,
                                                        @Param("fileId") String fileId);
 }

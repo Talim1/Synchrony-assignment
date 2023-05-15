@@ -34,7 +34,8 @@ public class MediaController {
             File convertedFile = FileConverter.convertToFile(inputFile);
             mediaService.uploadFile(convertedFile, userName);
         } catch(Exception e) {
-            return new ResponseEntity("Failed to upload image", HttpStatus.INTERNAL_SERVER_ERROR);
+            logger.error(e.getMessage(), e);
+            return new ResponseEntity("Failed to upload file, please upload image only", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return new ResponseEntity<>("File uploaded successfully", HttpStatus.OK);
@@ -44,11 +45,13 @@ public class MediaController {
     public ResponseEntity<?> deleteImage(@RequestParam("userName") String userName,
                                          @PathVariable("fileId") String fileId) {
 
+        logger.info("Image delete process started, user {}, file {}", userName, fileId);
         try {
             mediaService.deleteFile(userName, fileId);
         } catch (Exception e) {
+            logger.error(e.getMessage(), e);
             return new ResponseEntity(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>("File uploaded successfully", HttpStatus.OK);
+        return new ResponseEntity<>("File deleted successfully", HttpStatus.OK);
     }
 }

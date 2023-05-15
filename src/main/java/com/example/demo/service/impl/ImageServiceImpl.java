@@ -98,11 +98,11 @@ public class ImageServiceImpl implements MediaService {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Client-ID " + clientId);
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(headers);
-        ResponseEntity<FileMetadata> response = restTemplate.exchange(imgurBaseUrl+"/"+imageMetadata.get().getDeleteHash(),
-                HttpMethod.DELETE, requestEntity, FileMetadata.class);
+        ResponseEntity<?> response = restTemplate.exchange(imgurBaseUrl+"/"+imageMetadata.get().getDeleteHash(),
+                HttpMethod.DELETE, requestEntity, Object.class);
 
         logger.info("**********" + response.getBody().toString());
-        if(response.getBody().isSuccess()) {
+        if(response.getStatusCode().is2xxSuccessful()) {
 
                 imageMetadataRepository.delete(imageMetadata.get());
 
