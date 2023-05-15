@@ -50,4 +50,17 @@ public class UserServiceImpl implements UserService {
         return userRepository.authenticateUser(userName) == 1;
 
     }
+
+    @Override
+    public Optional<User> retrieveUser(String userName) throws UserNotFoundException {
+
+        Optional<com.example.demo.entity.User> dbUser = userRepository.findUserByUserName(userName);
+
+        if(dbUser.isEmpty()) {
+            throw new UserNotFoundException("User is not registered");
+        }
+        User userModel = userMapper.mapToUserModel(dbUser.get());
+
+        return Optional.of(userModel);
+    }
 }

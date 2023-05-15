@@ -1,5 +1,7 @@
 package com.example.demo.model;
 
+import java.util.List;
+
 public class User {
 
     private String username;
@@ -8,6 +10,16 @@ public class User {
     private String country;
     private int age;
     private String email;
+
+    private List<Data> imageData;
+
+    public List<Data> getImageData() {
+        return imageData;
+    }
+
+    public void setImageData(List<Data> imageData) {
+        this.imageData = imageData;
+    }
 
     public String getEmail() {
         return email;
