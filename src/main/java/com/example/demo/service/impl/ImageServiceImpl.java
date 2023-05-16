@@ -18,6 +18,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -40,6 +41,9 @@ public class ImageServiceImpl implements MediaService {
     @Value("${imgur.imgurBaseUrl}")
     private String imgurBaseUrl;
 
+    @Value("${kafka.image.upload.event.topic}")
+    private String imageUploadEventTopic;
+
     @Autowired
     private UserRepository userRepository;
 
@@ -47,7 +51,10 @@ public class ImageServiceImpl implements MediaService {
     private ImageMetadataRepository imageMetadataRepository;
 
     @Autowired
-    private RestTemplate restTemplate; // = new RestTemplate();
+    private RestTemplate restTemplate;
+
+    @Autowired
+    private KafkaTemplate<String, String> kafkaTemplate;
 
     private Logger logger = LoggerFactory.getLogger(ImageServiceImpl.class);
 
@@ -71,9 +78,14 @@ public class ImageServiceImpl implements MediaService {
         CompletableFuture.runAsync(() -> {
             try {
                 FileUtils.forceDelete(file);
-                //saveImageMetadataInUserProfile(response.getBody(), userName);
+                // Publishing message to kafka topic
+                logger.info("Publishing message to kafka topic");
+                String message = userName + " has uploaded image " + file.getName();
+                kafkaTemplate.send(imageUploadEventTopic, message);
             } catch (IOException e) {
                 logger.error("Failed to delete the temp file.");
+            } catch(Exception e) {
+                logger.error(e.getMessage(), e);
             }
         });
 

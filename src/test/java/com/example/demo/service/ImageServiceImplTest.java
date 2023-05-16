@@ -57,7 +57,6 @@ import java.util.Optional;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest()
-@ActiveProfiles("test")
 public class ImageServiceImplTest {
 
     @Value("${imgur.clientId}")
