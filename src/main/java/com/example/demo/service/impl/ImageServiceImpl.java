@@ -103,12 +103,9 @@ public class ImageServiceImpl implements MediaService {
         ResponseEntity<?> response = restTemplate.exchange(imgurBaseUrl+"/"+imageMetadata.get().getDeleteHash(),
                 HttpMethod.DELETE, requestEntity, Object.class);
 
-        logger.info("**********" + response.getBody().toString());
+
         if(response.getStatusCode().is2xxSuccessful()) {
-
-                imageMetadataRepository.delete(imageMetadata.get());
-
-
+            imageMetadataRepository.delete(imageMetadata.get());
         }
 
     }

@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.DemoApplication;
 import com.example.demo.DemoApplicationTests;
 import com.example.demo.entity.ImageMetadata;
+import com.example.demo.exception.FileNotFoundException;
 import com.example.demo.mapper.ImageDataMapper;
 import com.example.demo.mapper.ImageDataMapperImpl;
 import com.example.demo.mapper.UserMapper;
@@ -41,9 +42,11 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+
 import org.mapstruct.factory.Mappers;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
@@ -82,7 +85,7 @@ public class ImageServiceImplTest {
     }
 
     @Test
-    public void testUploadFile() throws Exception {
+    public void testUploadFile_Success() {
 
         FileMetadata fm = new FileMetadata();
         fm.setStatus(200);
@@ -111,4 +114,45 @@ public class ImageServiceImplTest {
         assertEquals(200, fileMetadata.getStatus());
         assertEquals("abc123", fileMetadata.getData().getDeletehash());
     }
+
+    @Test(expected = RestClientException.class)
+    public void testUploadFile_Failure() {
+        File file = new File("./");
+        when(restTemplate.exchange(Mockito.anyString(), Mockito.eq(HttpMethod.POST), Mockito.any(HttpEntity.class), Mockito.<Class<FileMetadata>>any())
+        ).thenThrow(RestClientException.class);
+
+        imageService.uploadFile(file, "sislam028");
+
+    }
+
+    @Test(expected = FileNotFoundException.class)
+    public void testDeleteFile_Failure() throws FileNotFoundException {
+
+        when(imageMetadataRepository.findUserByUserNameAndFileId(Mockito.anyString(), Mockito.anyString())).thenReturn(Optional.empty());
+        imageService.deleteFile("sislam028", "abc123");
+    }
+
+    @Test
+    public void testDeleteFile_Success() throws FileNotFoundException {
+        ResponseEntity<FileMetadata> response = new ResponseEntity<>(HttpStatus.OK);
+        when(imageMetadataRepository.findUserByUserNameAndFileId(Mockito.anyString(), Mockito.anyString()))
+                .thenReturn(Optional.of(createImageMetadata()));
+        doNothing().when(imageMetadataRepository).delete(Mockito.any());
+        when(restTemplate.exchange(Mockito.anyString(), Mockito.eq(HttpMethod.DELETE), Mockito.any(HttpEntity.class), Mockito.<Class<FileMetadata>>any())
+        ).thenReturn(response);
+        imageService.deleteFile("sislam028", "abc123");
+
+        verify(imageMetadataRepository, times(1)).delete(Mockito.any());
+    }
+
+    private ImageMetadata createImageMetadata() {
+
+        ImageMetadata imageMetadata = new ImageMetadata();
+        imageMetadata.setUsername("sislam028");
+        imageMetadata.setDeleteHash("sxw3w");
+
+        return imageMetadata;
+    }
+
+
 }

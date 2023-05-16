@@ -51,7 +51,7 @@ public class DemoUtil {
             }
             return targetFile;
         } catch (Exception e) {
-            logger.info(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
         }
         return null;
     }
@@ -63,7 +63,7 @@ public class DemoUtil {
 
         try{
 
-            desktop.browse(new URI("https://www.google.com/"));
+            desktop.browse(new URI(url));
 
         }catch(Exception e){
             logger.error(e.getMessage(), e);
