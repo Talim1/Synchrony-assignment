@@ -1,7 +1,6 @@
 package com.example.demo.service;
 
 import com.example.demo.DemoApplication;
-import com.example.demo.DemoApplicationTests;
 import com.example.demo.entity.ImageMetadata;
 import com.example.demo.exception.FileNotFoundException;
 import com.example.demo.mapper.ImageDataMapper;
