@@ -23,4 +23,5 @@ Imgur image manager
 4. **View Image** -> View the uploaded image using file id
 5. **Delete Image** -> Delete the uploaded image using file id
 6. **View User** -> View an user and image metadata using username
+
 **Note:** For the payload and other api parameters, please refer to the postman collection json
