@@ -1,0 +1,179 @@
+{
+	"info": {
+		"_postman_id": "10141cbb-fcea-43d7-9fe0-2c734e34bbb2",
+		"name": "Synchrony",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Register User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\" : \"sislam029\",\r\n    \"password\" : \"asaw2w\",\r\n    \"fullName\" : \"Hello world\",\r\n    \"email\" : \"abc@email.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/signup",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\" : \"sislam029\",\r\n    \"password\" : \"asaw2w\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/login",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Upload Image",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/sislam028/Downloads/11234651086_681b3c2c00_b.jpg"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:8080/image/upload?userName=sislam029",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"image",
+						"upload"
+					],
+					"query": [
+						{
+							"key": "userName",
+							"value": "sislam029"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Image",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/image/delete/6hcb5Ty?userName=sislam029",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"image",
+						"delete",
+						"6hcb5Ty"
+					],
+					"query": [
+						{
+							"key": "userName",
+							"value": "sislam029"
+						},
+						{
+							"key": "fileId",
+							"value": "6hcb5Ty",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "View Image",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/image/delete/5wVnQvJ?userName=sislam029",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"image",
+						"delete",
+						"5wVnQvJ"
+					],
+					"query": [
+						{
+							"key": "userName",
+							"value": "sislam029"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "View User",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/user?userName=sislam029",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"user"
+					],
+					"query": [
+						{
+							"key": "userName",
+							"value": "sislam029"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
