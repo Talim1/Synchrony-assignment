@@ -16,3 +16,10 @@ Imgur image manager
 6. Import the **Synchrony.postman_collection.json** file into Postman tool. After successful import you'll see something like this in postman.
 ![image](https://github.com/Talim1/Synchrony-assignment/assets/25170304/80acfe81-29be-4d11-8e30-35abdb7e2c0b)
 
+## API definations
+1. **Register User** -> Register an user in the Database
+2. **User Login** -> User needs to login with their username/password in order use the functionalities like image upload, view, delete
+3. **Upload image** -> Upload an image to imgur using imgur image upload api
+4. **View Image** -> View the uploaded image using file id
+5. **Delete Image** -> Delete the uploaded image using file id
+6. **View User** -> View an user and image metadata using username
