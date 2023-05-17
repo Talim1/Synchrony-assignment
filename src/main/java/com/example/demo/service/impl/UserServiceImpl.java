@@ -35,6 +35,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> registerUser(User user) throws Exception {
 
+        Optional<com.example.demo.entity.User> existingUser = userRepository.findUserByUserName(user.getUsername());
+        if(existingUser.isPresent()) {
+            logger.error("User is already registered: {}", user.getUsername());
+            throw new Exception("User is already registered: "+ user.getUsername());
+        }
         com.example.demo.entity.User userEntity = userMapper.mapToUserEntity(user);
         com.example.demo.entity.User dbUser = userRepository.save(userEntity);
         if(null == dbUser) {

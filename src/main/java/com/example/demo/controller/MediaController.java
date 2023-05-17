@@ -39,7 +39,7 @@ public class MediaController {
             mediaService.uploadFile(convertedFile, userName);
         } catch(Exception e) {
             logger.error(e.getMessage(), e);
-            return new ResponseEntity("Failed to upload file, please upload image only", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity("Failed to upload file, please check file or try again later", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return new ResponseEntity<>("File uploaded successfully", HttpStatus.OK);
