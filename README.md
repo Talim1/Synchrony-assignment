@@ -29,6 +29,6 @@ Imgur image manager
 ## Additional Steps
 
 If a local Kafka is installed, The zookeeper and kafka server needs to be started first and then start the application enabling kafka profile.
-1. Start kafka zookeeper -> .\bin\windows\zookeeper-server-start.bat .\config\zookeeper.properties
-2. Start kafka server -> .\bin\windows\kafka-server-start.bat .\config\server.properties
-3. Start the app -> mvn spring-boot:run -D"spring-boot.run.profiles"=kafka 
+1. **Start kafka zookeeper** -> .\bin\windows\zookeeper-server-start.bat .\config\zookeeper.properties
+2. **Start kafka server** -> .\bin\windows\kafka-server-start.bat .\config\server.properties
+3. **Start the app** -> mvn spring-boot:run -D"spring-boot.run.profiles"=kafka 
